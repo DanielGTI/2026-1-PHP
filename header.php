@@ -1,3 +1,13 @@
+<?php
+
+    session_start();
+    // isset = verifica se variavel existe 
+    if( !isset( $_SESSION['nome_usuario'] ) && $_SERVER['REQUEST_URI'] != "/2026-1-php/login.php" ){
+        header('Location: login.php');  // Enviar para a tela de login
+        exit(); 
+    }
+?>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->

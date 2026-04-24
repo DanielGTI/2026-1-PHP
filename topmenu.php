@@ -10,7 +10,10 @@
                                     <li class="">
                                         <a href="javascript:;" class="user-profile dropdown-toggle"
                                            data-toggle="dropdown" aria-expanded="false">
-                                            <img src="images/img.jpg" alt="">John Doe
+                                            <img src="images/img.jpg" alt="">
+                                            <?php
+                                                echo $_SESSION['nome_usuario'];
+                                            ?>
                                             <span class=" fa fa-angle-down"></span>
                                         </a>
                                         <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -22,8 +25,7 @@
                                                 </a>
                                             </li>
                                             <li><a href="javascript:;">Help</a></li>
-                                            <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log
-                                                Out</a></li>
+                                            <li><a href="logout.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                         </ul>
                                     </li>
 
@@ -38,7 +40,10 @@
                                                 <a>
                                                     <span class="image"><img src="images/img.jpg" alt="Profile Image"/></span>
                                                     <span>
-                          <span>John Smith</span>
+                                                        <?php
+                                                            echo $_SESSION['nome_usuario'];
+                                                        ?>
+                                                    </span>
                           <span class="time">3 mins ago</span>
                         </span>
                                                     <span class="message">
@@ -46,42 +51,7 @@
                         </span>
                                                 </a>
                                             </li>
-                                            <li>
-                                                <a>
-                                                    <span class="image"><img src="images/img.jpg" alt="Profile Image"/></span>
-                                                    <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                                                    <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a>
-                                                    <span class="image"><img src="images/img.jpg" alt="Profile Image"/></span>
-                                                    <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                                                    <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a>
-                                                    <span class="image"><img src="images/img.jpg" alt="Profile Image"/></span>
-                                                    <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                                                    <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                                                </a>
-                                            </li>
+                                            
                                             <li>
                                                 <div class="text-center">
                                                     <a>

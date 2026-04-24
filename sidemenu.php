@@ -5,7 +5,12 @@
                         </div>
                         <div class="profile_info">
                             <span>Bem vindo,</span>
-                            <h2>John Doe</h2>
+                            <h2>
+                                <?php
+                                    echo $_SESSION['nome_usuario'];
+                                ?>
+
+                            </h2>
                         </div>
                         <div class="clearfix"></div>
                     </div>
