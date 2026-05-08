@@ -28,7 +28,7 @@
 
                     <?php
                         require_once 'config/topmenu.php';
-                        require_once 'paginas/content.php';
+                        require_once 'paginas/celular.php';
                         require_once 'config/footer.php';
                     ?>
                 </div>

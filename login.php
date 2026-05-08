@@ -2,7 +2,7 @@
 <html lang="en">
 
 <?php
-     require_once 'header.php';
+     require_once 'config/header.php';
 ?>
 
 <body class="login">
@@ -13,7 +13,7 @@
     <div class="login_wrapper">
         <div class="animate form login_form">
             <section class="login_content">
-                <form name="form_login" action="acesso.php" method="post">
+                <form name="form_login" action="paginas/acesso.php" method="post">
                     <h1>Login Sistema</h1>
                     <div>
                         <input type="text" name="username" class="form-control" placeholder="Username" required=""/>
