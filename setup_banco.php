@@ -4,10 +4,11 @@
     COMO USAR ESTE ARQUIVO EM UM SERVIDOR NOVO
 
     Este arquivo serve para preparar o banco de dados do projeto.
-    Ele faz duas coisas automaticamente:
+    Ele faz algumas coisas automaticamente:
 
     1. Cria a tabela "celulares", caso ela ainda nao exista.
-    2. Insere os dados iniciais, mas apenas se a tabela estiver vazia.
+    2. Cria a tabela "usuarios", usada na tela de login.
+    3. Insere os dados iniciais, mas apenas se as tabelas estiverem vazias.
 
     PASSO A PASSO SIMPLES:
 
@@ -33,6 +34,11 @@
     Se a mensagem final indicar sucesso, o projeto ja estara com
     a estrutura minima criada e com os dados iniciais cadastrados.
 
+    LOGIN INICIAL DO SISTEMA:
+
+    - Usuario: Daniel
+    - Senha: 1234
+
     IMPORTANTE:
 
     - Este arquivo pode ser executado novamente sem problema.
@@ -53,6 +59,19 @@ $sqlTabelaCelulares = "
 
 if (!$conexao->query($sqlTabelaCelulares)) {
     die('Erro ao criar a tabela celulares: ' . $conexao->error);
+}
+
+// Cria a tabela de usuarios usada pela pagina de login.
+$sqlTabelaUsuarios = "
+    CREATE TABLE IF NOT EXISTS usuarios (
+        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(100) NOT NULL,
+        senha VARCHAR(100) NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+";
+
+if (!$conexao->query($sqlTabelaUsuarios)) {
+    die('Erro ao criar a tabela usuarios: ' . $conexao->error);
 }
 
 // Verifica se a tabela ja possui dados cadastrados.
@@ -76,11 +95,30 @@ if ($total === 0) {
     if (!$conexao->query($sqlSeeder)) {
         die('Erro ao inserir dados iniciais: ' . $conexao->error);
     }
-
-    echo 'Estrutura criada e dados iniciais inseridos com sucesso.';
-} else {
-    echo 'Estrutura verificada com sucesso. A tabela celulares ja possui dados.';
 }
+
+// Verifica se ja existe algum usuario cadastrado para o login.
+$resultUsuarios = $conexao->query("SELECT COUNT(*) AS total FROM usuarios");
+
+if ($resultUsuarios === false) {
+    die('Erro ao verificar usuarios iniciais: ' . $conexao->error);
+}
+
+$totalUsuarios = (int) $resultUsuarios->fetch_assoc()['total'];
+
+// Se estiver vazia, cria o usuario inicial do sistema.
+if ($totalUsuarios === 0) {
+    $sqlSeederUsuarios = "
+        INSERT INTO usuarios (username, senha) VALUES
+        ('Daniel', '1234')
+    ";
+
+    if (!$conexao->query($sqlSeederUsuarios)) {
+        die('Erro ao inserir usuario inicial: ' . $conexao->error);
+    }
+}
+
+echo 'Estrutura do banco verificada com sucesso. Tabelas de celulares e usuarios prontas para uso.';
 
 // Fecha a conexao com o banco ao final do processo.
 $conexao->close();
