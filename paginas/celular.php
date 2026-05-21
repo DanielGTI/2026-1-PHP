@@ -3,7 +3,7 @@
                         <div class="">
                             <div class="page-title row">
                                 <div class="col-sm-6 col-12 text-left">
-                                    
+
                                 </div>
 
                                 <div class="col-sm-6 col-12 text-right">
@@ -12,8 +12,8 @@
                                             <div class="input-group">
                                                 <input type="text" class="form-control" placeholder="Procurar por...">
                                                 <span class="input-group-btn">
-                      <button class="btn btn-light" type="button">Ir!</button>
-                    </span>
+                                                    <button class="btn btn-light" type="button">Ir!</button>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -46,9 +46,6 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="x_content">
-                                            
-                                        
-                                        
 
                                             <table class="table table-striped">
                                                 <thead>
@@ -57,6 +54,7 @@
                                                     <th>Fabricante</th>
                                                     <th>Modelo</th>
                                                     <th>Memória</th>
+                                                    <th>Editar</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -65,30 +63,36 @@
                                                     <td>Apple</td>
                                                     <td>iPhone 17 Pro Max</td>
                                                     <td>512</td>
+                                                    <td>
+                                                        <a href="editar_celular.php?id=1" class="btn btn-info btn-sm" title="Editar">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">2</th>
                                                     <td>Samsung</td>
                                                     <td>Galaxy 26</td>
                                                     <td>256</td>
+                                                    <td>
+                                                        <a href="editar_celular.php?id=2" class="btn btn-info btn-sm" title="Editar">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">3</th>
                                                     <td>Motorola</td>
                                                     <td>Moto G 56</td>
                                                     <td>256</td>
+                                                    <td>
+                                                        <a href="editar_celular.php?id=3" class="btn btn-info btn-sm" title="Editar">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                                 </tbody>
                                             </table>
-
-                                        </div>
-                                    </div>
-
-
-
-
-
-
 
                                         </div>
                                     </div>

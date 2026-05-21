@@ -2,7 +2,7 @@
 
     session_start();
     // isset = verifica se variavel existe 
-    if( !isset( $_SESSION['nome_usuario'] ) && $_SERVER['REQUEST_URI'] != "/2026-1-php/login.php" ){
+    if( !isset( $_SESSION['nome_usuario'] ) && basename($_SERVER['SCRIPT_NAME']) != "login.php" ){
         header('Location: login.php');  // Enviar para a tela de login
         exit(); 
     }

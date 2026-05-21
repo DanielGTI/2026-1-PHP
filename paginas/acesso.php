@@ -16,10 +16,10 @@
         $_SESSION['senha'] = $senha_login;          // senha
 
         // redirecionar para pagina principal
-        header("Location: index.php");
+        header("Location: ../index.php");
         
     }else{
-        header("Location: login.php");    
+        header("Location: ../login.php");    
     }
 
 
