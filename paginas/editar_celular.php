@@ -1,24 +1,24 @@
 <?php
-    $celulares = array(
-        1 => array(
-            'fabricante' => 'Apple',
-            'modelo' => 'iPhone 17 Pro Max',
-            'memoria' => '512'
-        ),
-        2 => array(
-            'fabricante' => 'Samsung',
-            'modelo' => 'Galaxy 26',
-            'memoria' => '256'
-        ),
-        3 => array(
-            'fabricante' => 'Motorola',
-            'modelo' => 'Moto G 56',
-            'memoria' => '256'
-        )
-    );
+    require_once 'config/conexao.php';
 
-    $id = isset($_GET['id']) ? (int) $_GET['id'] : 1;
-    $celular = isset($celulares[$id]) ? $celulares[$id] : $celulares[1];
+    $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+    $celular = null;
+
+    if ($id > 0) {
+        $stmt = $conexao->prepare("SELECT id, fabricante, modelo, memoria FROM celulares WHERE id = ?");
+
+        if ($stmt === false) {
+            die('Erro ao preparar consulta do celular: ' . $conexao->error);
+        }
+
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $celular = $result->fetch_assoc();
+
+        $stmt->close();
+    }
 ?>
 
                     <!-- page content -->
@@ -70,41 +70,48 @@
                                         </div>
                                         <div class="x_content">
                                             <br>
-                                            <form class="form-horizontal form-label-left" method="post" action="celulares.php">
-                                                <input type="hidden" name="id" value="<?php echo $id; ?>">
+                                            <?php if ($celular) { ?>
+                                                <form class="form-horizontal form-label-left" method="post" action="editar_celular.php">
+                                                    <input type="hidden" name="id" value="<?php echo (int) $celular['id']; ?>">
 
-                                                <div class="form-group row">
-                                                    <label class="control-label col-md-3 col-sm-3 col-12" for="fabricante">Fabricante</label>
-                                                    <div class="col-md-6 col-sm-9 col-12">
-                                                        <input type="text" id="fabricante" name="fabricante" class="form-control" value="<?php echo $celular['fabricante']; ?>">
+                                                    <div class="form-group row">
+                                                        <label class="control-label col-md-3 col-sm-3 col-12" for="fabricante">Fabricante</label>
+                                                        <div class="col-md-6 col-sm-9 col-12">
+                                                            <input type="text" id="fabricante" name="fabricante" class="form-control" value="<?php echo htmlspecialchars($celular['fabricante']); ?>">
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="form-group row">
-                                                    <label class="control-label col-md-3 col-sm-3 col-12" for="modelo">Modelo</label>
-                                                    <div class="col-md-6 col-sm-9 col-12">
-                                                        <input type="text" id="modelo" name="modelo" class="form-control" value="<?php echo $celular['modelo']; ?>">
+                                                    <div class="form-group row">
+                                                        <label class="control-label col-md-3 col-sm-3 col-12" for="modelo">Modelo</label>
+                                                        <div class="col-md-6 col-sm-9 col-12">
+                                                            <input type="text" id="modelo" name="modelo" class="form-control" value="<?php echo htmlspecialchars($celular['modelo']); ?>">
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="form-group row">
-                                                    <label class="control-label col-md-3 col-sm-3 col-12" for="memoria">Memória</label>
-                                                    <div class="col-md-6 col-sm-9 col-12">
-                                                        <input type="number" id="memoria" name="memoria" class="form-control" value="<?php echo $celular['memoria']; ?>">
+                                                    <div class="form-group row">
+                                                        <label class="control-label col-md-3 col-sm-3 col-12" for="memoria">Memória</label>
+                                                        <div class="col-md-6 col-sm-9 col-12">
+                                                            <input type="number" id="memoria" name="memoria" class="form-control" value="<?php echo (int) $celular['memoria']; ?>">
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="ln_solid"></div>
+                                                    <div class="ln_solid"></div>
 
-                                                <div class="form-group row">
-                                                    <div class="col-md-6 col-sm-9 col-12 offset-md-3">
-                                                        <a href="celulares.php" class="btn btn-secondary">Cancelar</a>
-                                                        <button type="submit" class="btn btn-success">
-                                                            <i class="fa fa-save"></i> Salvar
-                                                        </button>
+                                                    <div class="form-group row">
+                                                        <div class="col-md-6 col-sm-9 col-12 offset-md-3">
+                                                            <a href="celulares.php" class="btn btn-secondary">Cancelar</a>
+                                                            <button type="submit" class="btn btn-success">
+                                                                <i class="fa fa-save"></i> Salvar
+                                                            </button>
+                                                        </div>
                                                     </div>
+                                                </form>
+                                            <?php } else { ?>
+                                                <div class="alert alert-warning" role="alert">
+                                                    Celular não encontrado.
                                                 </div>
-                                            </form>
+                                                <a href="celulares.php" class="btn btn-secondary">Voltar</a>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                 </div>

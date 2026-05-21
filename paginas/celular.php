@@ -1,9 +1,22 @@
+<?php
+    require_once 'config/conexao.php';
+
+    $sql = "SELECT id, fabricante, modelo, memoria FROM celulares ORDER BY id";
+    $result = $conexao->query($sql);
+
+    if ($result === false) {
+        die('Erro ao carregar celulares: ' . $conexao->error);
+    }
+?>
+
                     <!-- page content -->
                     <div class="col-lg-12 col-md-12 right_col" role="main">
                         <div class="">
                             <div class="page-title row">
                                 <div class="col-sm-6 col-12 text-left">
-
+                                    <a href="novo_celular.php" class="btn btn-success mt-3">
+                                        <i class="fa fa-plus"></i> Novo Celular
+                                    </a>
                                 </div>
 
                                 <div class="col-sm-6 col-12 text-right">
@@ -55,42 +68,41 @@
                                                     <th>Modelo</th>
                                                     <th>Memória</th>
                                                     <th>Editar</th>
+                                                    <th>Excluir</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Apple</td>
-                                                    <td>iPhone 17 Pro Max</td>
-                                                    <td>512</td>
-                                                    <td>
-                                                        <a href="editar_celular.php?id=1" class="btn btn-info btn-sm" title="Editar">
-                                                            <i class="fa fa-pencil"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Samsung</td>
-                                                    <td>Galaxy 26</td>
-                                                    <td>256</td>
-                                                    <td>
-                                                        <a href="editar_celular.php?id=2" class="btn btn-info btn-sm" title="Editar">
-                                                            <i class="fa fa-pencil"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3</th>
-                                                    <td>Motorola</td>
-                                                    <td>Moto G 56</td>
-                                                    <td>256</td>
-                                                    <td>
-                                                        <a href="editar_celular.php?id=3" class="btn btn-info btn-sm" title="Editar">
-                                                            <i class="fa fa-pencil"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
+                                                <?php if ($result->num_rows > 0) { ?>
+                                                    <?php while ($celular = $result->fetch_assoc()) { ?>
+                                                        <tr>
+                                                            <th scope="row"><?php echo (int) $celular['id']; ?></th>
+                                                            <td><?php echo htmlspecialchars($celular['fabricante']); ?></td>
+                                                            <td><?php echo htmlspecialchars($celular['modelo']); ?></td>
+                                                            <td><?php echo (int) $celular['memoria']; ?></td>
+                                                            <td>
+                                                                <a href="editar_celular.php?id=<?php echo (int) $celular['id']; ?>" class="btn btn-info btn-sm" title="Editar">
+                                                                    <i class="fa fa-pencil"></i>
+                                                                </a>
+                                                            </td>
+                                                            <td>
+                                                                <button
+                                                                    type="button"
+                                                                    class="btn btn-danger btn-sm btn-excluir-celular"
+                                                                    title="Excluir"
+                                                                    data-toggle="modal"
+                                                                    data-target="#modalExcluirCelular"
+                                                                    data-id="<?php echo (int) $celular['id']; ?>"
+                                                                    data-modelo="<?php echo htmlspecialchars($celular['modelo'], ENT_QUOTES); ?>">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    <?php } ?>
+                                                <?php } else { ?>
+                                                    <tr>
+                                                        <td colspan="6" class="text-center">Nenhum celular cadastrado.</td>
+                                                    </tr>
+                                                <?php } ?>
                                                 </tbody>
                                             </table>
 
@@ -100,4 +112,43 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="modal fade" id="modalExcluirCelular" tabindex="-1" role="dialog" aria-labelledby="modalExcluirCelularLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalExcluirCelularLabel">Excluir celular</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Deseja realmente excluir o celular <strong id="nomeCelularExcluir"></strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                    <form method="post" action="celulares.php" class="m-0">
+                                        <input type="hidden" name="acao" value="excluir">
+                                        <input type="hidden" name="id" id="idCelularExcluir" value="">
+                                        <button type="submit" class="btn btn-danger">Excluir</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        (function () {
+                            var botoesExcluir = document.querySelectorAll('.btn-excluir-celular');
+                            var campoIdExcluir = document.getElementById('idCelularExcluir');
+                            var nomeCelularExcluir = document.getElementById('nomeCelularExcluir');
+
+                            for (var i = 0; i < botoesExcluir.length; i++) {
+                                botoesExcluir[i].addEventListener('click', function () {
+                                    campoIdExcluir.value = this.getAttribute('data-id');
+                                    nomeCelularExcluir.textContent = this.getAttribute('data-modelo');
+                                });
+                            }
+                        })();
+                    </script>
                     <!-- /page content -->

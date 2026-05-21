@@ -1,3 +1,32 @@
+<?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'excluir') {
+        require_once 'config/conexao.php';
+
+        $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+
+        if ($id > 0) {
+            $stmt = $conexao->prepare("DELETE FROM celulares WHERE id = ?");
+
+            if ($stmt === false) {
+                die('Erro ao preparar exclusao do celular: ' . $conexao->error);
+            }
+
+            $stmt->bind_param('i', $id);
+
+            if (!$stmt->execute()) {
+                die('Erro ao excluir celular: ' . $stmt->error);
+            }
+
+            $stmt->close();
+        }
+
+        $conexao->close();
+
+        header('Location: celulares.php');
+        exit();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

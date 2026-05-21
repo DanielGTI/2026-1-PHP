@@ -2,22 +2,21 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         require_once 'config/conexao.php';
 
-        $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
         $fabricante = isset($_POST['fabricante']) ? trim($_POST['fabricante']) : '';
         $modelo = isset($_POST['modelo']) ? trim($_POST['modelo']) : '';
         $memoria = isset($_POST['memoria']) ? (int) $_POST['memoria'] : 0;
 
-        if ($id > 0 && $fabricante !== '' && $modelo !== '' && $memoria > 0) {
-            $stmt = $conexao->prepare("UPDATE celulares SET fabricante = ?, modelo = ?, memoria = ? WHERE id = ?");
+        if ($fabricante !== '' && $modelo !== '' && $memoria > 0) {
+            $stmt = $conexao->prepare("INSERT INTO celulares (fabricante, modelo, memoria) VALUES (?, ?, ?)");
 
             if ($stmt === false) {
-                die('Erro ao preparar atualização do celular: ' . $conexao->error);
+                die('Erro ao preparar cadastro do celular: ' . $conexao->error);
             }
 
-            $stmt->bind_param('ssii', $fabricante, $modelo, $memoria, $id);
+            $stmt->bind_param('ssi', $fabricante, $modelo, $memoria);
 
             if (!$stmt->execute()) {
-                die('Erro ao atualizar celular: ' . $stmt->error);
+                die('Erro ao cadastrar celular: ' . $stmt->error);
             }
 
             $stmt->close();
@@ -59,7 +58,7 @@
 
                     <?php
                         require_once 'config/topmenu.php';
-                        require_once 'paginas/editar_celular.php';
+                        require_once 'paginas/novo_celular.php';
                         require_once 'config/footer.php';
                     ?>
                 </div>
